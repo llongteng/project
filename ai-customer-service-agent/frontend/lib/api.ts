@@ -234,6 +234,8 @@ export async function streamAgentReply(
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
+      // Normalize CRLF to LF for consistent SSE parsing
+      buffer = buffer.replace(/\r\n/g, "\n");
 
       const blocks = buffer.split("\n\n");
       buffer = blocks.pop() || "";
